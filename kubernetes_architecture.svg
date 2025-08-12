@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1200" height="720" viewBox="0 0 1200 720" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .title { font: 700 20px/1.2 Inter,Segoe UI,Arial,sans-serif; fill:#0d1117; }
+      .label { font: 600 14px/1.2 Inter,Segoe UI,Arial,sans-serif; fill:#0d1117; }
+      .small { font: 12px/1.2 Inter,Segoe UI,Arial,sans-serif; fill:#374151; }
+      .service { fill:#e3f2fd; stroke:#1976d2; stroke-width:1.5; rx:10; ry:10; }
+      .deploy { fill:#e8f5e9; stroke:#2e7d32; stroke-width:1.5; rx:10; ry:10; }
+      .pod { fill:#fff3e0; stroke:#ef6c00; stroke-width:1.5; rx:12; ry:12; }
+      .storage { fill:#f3e5f5; stroke:#6a1b9a; stroke-width:1.5; rx:10; ry:10; }
+      .cylinder { fill:#f3e5f5; stroke:#6a1b9a; stroke-width:1.5; }
+      .edge { stroke:#6b7280; stroke-width:1.5; fill:none; }
+      .edge-text { font: 12px/1.2 Inter,Segoe UI,Arial,sans-serif; fill:#374151; }
+    </style>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#6b7280"/>
+    </marker>
+  </defs>
+
+  <!-- Título -->
+  <text x="600" y="40" text-anchor="middle" class="title">Arquitetura — Desafio 1 Kubernetes</text>
+
+  <!-- Usuário -->
+  <g transform="translate(80,100)">
+    <circle cx="60" cy="60" r="40" fill="#e5e7eb" stroke="#9ca3af" stroke-width="1.5"/>
+    <text x="60" y="120" text-anchor="middle" class="label">Usuário / Browser</text>
+  </g>
+
+  <!-- Service php-lb -->
+  <g id="svc-lb" transform="translate(380,80)">
+    <rect class="service" x="0" y="0" width="300" height="80"/>
+    <text x="150" y="32" text-anchor="middle" class="label">Service: php-lb</text>
+    <text x="150" y="54" text-anchor="middle" class="small">(LoadBalancer / NodePort)</text>
+  </g>
+
+  <!-- Aresta: Usuário -> php-lb -->
+  <path class="edge" d="M 140 160 C 240 160, 300 160, 380 120" marker-end="url(#arrow)"/>
+  <text x="270" y="150" class="edge-text">HTTP</text>
+
+  <!-- Deployment PHP -->
+  <g id="deploy-php" transform="translate(420,220)">
+    <rect class="deploy" x="0" y="0" width="220" height="70"/>
+    <text x="110" y="42" text-anchor="middle" class="label">Deployment: php-app</text>
+  </g>
+
+  <!-- Aresta: php-lb -> deploy-php -->
+  <path class="edge" d="M 530 160 C 530 190, 530 190, 530 220" marker-end="url(#arrow)"/>
+
+  <!-- Pods PHP -->
+  <g id="pod-php1" transform="translate(280,340)">
+    <rect class="pod" x="0" y="0" width="200" height="60" rx="14" ry="14"/>
+    <text x="100" y="36" text-anchor="middle" class="label">Pod PHP #1</text>
+  </g>
+
+  <g id="pod-php2" transform="translate(560,340)">
+    <rect class="pod" x="0" y="0" width="200" height="60" rx="14" ry="14"/>
+    <text x="100" y="36" text-anchor="middle" class="label">Pod PHP #2</text>
+  </g>
+
+  <!-- Arestas: deploy-php -> pods -->
+  <path class="edge" d="M 530 290 C 460 320, 420 320, 380 340" marker-end="url(#arrow)"/>
+  <path class="edge" d="M 530 290 C 600 320, 640 320, 660 340" marker-end="url(#arrow)"/>
+
+  <!-- Service database -->
+  <g id="svc-db" transform="translate(420,460)">
+    <rect class="service" x="0" y="0" width="220" height="80"/>
+    <text x="110" y="34" text-anchor="middle" class="label">Service: database</text>
+    <text x="110" y="56" text-anchor="middle" class="small">porta 3306</text>
+  </g>
+
+  <!-- Arestas: pods -> svc-db -->
+  <path class="edge" d="M 380 400 C 420 440, 440 440, 470 460" marker-end="url(#arrow)"/>
+  <text x="405" y="438" class="edge-text">TCP 3306</text>
+
+  <path class="edge" d="M 760 400 C 720 440, 700 440, 590 460" marker-end="url(#arrow)"/>
+  <text x="705" y="438" class="edge-text">TCP 3306</text>
+
+  <!-- Deployment DB -->
+  <g id="deploy-db" transform="translate(420,580)">
+    <rect class="deploy" x="0" y="0" width="220" height="70"/>
+    <text x="110" y="42" text-anchor="middle" class="label">Deployment: db</text>
+  </g>
+
+  <!-- Aresta: svc-db -> deploy-db -->
+  <path class="edge" d="M 530 540 C 530 560, 530 560, 530 580" marker-end="url(#arrow)"/>
+
+  <!-- Pod DB -->
+  <g id="pod-db" transform="translate(420,670)">
+    <!-- Mantemos dentro do viewBox (y=670 + 60 > 720). Ajuste para caber: -->
+  </g>
+
+  <!-- Ajuste: colocar o Pod DB na mesma linha do deploy, à direita -->
+  <g id="pod-db-fixed" transform="translate(700,580)">
+    <rect class="pod" x="0" y="0" width="200" height="70" rx="14" ry="14"/>
+    <text x="100" y="42" text-anchor="middle" class="label">Pod DB</text>
+  </g>
+
+  <!-- Aresta: deploy-db -> pod-db -->
+  <path class="edge" d="M 640 615 C 660 615, 660 615, 700 615" marker-end="url(#arrow)"/>
+
+  <!-- PVC e PV (armazenamento) -->
+  <g id="pvc" transform="translate(960,560)">
+    <rect class="storage" x="0" y="0" width="210" height="60" rx="10" ry="10"/>
+    <text x="105" y="36" text-anchor="middle" class="label">PersistentVolumeClaim</text>
+  </g>
+
+  <g id="pv" transform="translate(960,640)">
+    <!-- Desenho estilo cilindro para PV -->
+    <ellipse cx="105" cy="10" rx="105" ry="10" class="cylinder"/>
+    <rect x="0" y="10" width="210" height="40" class="cylinder"/>
+    <ellipse cx="105" cy="50" rx="105" ry="10" class="cylinder"/>
+    <text x="105" y="84" text-anchor="middle" class="label">PersistentVolume</text>
+  </g>
+
+  <!-- Ligações armazenamento -->
+  <path class="edge" d="M 900 615 C 930 615, 930 615, 960 590" marker-end="url(#arrow)"/>
+  <path class="edge" d="M 1065 620 C 1065 630, 1065 630, 1065 640" marker-end="url(#arrow)"/>
+
+  <!-- Legenda -->
+  <g transform="translate(70,600)">
+    <rect x="0" y="0" width="280" height="100" fill="#ffffff" stroke="#e5e7eb"/>
+    <rect x="14" y="16" width="18" height="12" class="service"/>
+    <text x="40" y="26" class="small">Service</text>
+    <rect x="14" y="40" width="18" height="12" class="deploy"/>
+    <text x="40" y="50" class="small">Deployment</text>
+    <rect x="14" y="64" width="18" height="12" class="pod" rx="3" ry="3"/>
+    <text x="40" y="74" class="small">Pod</text>
+    <rect x="150" y="16" width="18" height="12" class="storage"/>
+    <text x="176" y="26" class="small">PVC</text>
+    <rect x="150" y="40" width="18" height="12" class="cylinder"/>
+    <text x="176" y="50" class="small">PV</text>
+  </g>
+</svg>
