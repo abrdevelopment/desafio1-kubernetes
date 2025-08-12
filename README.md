@@ -91,7 +91,6 @@ sequenceDiagram
     # o script abaixo contém a automação dos comandos acima
     .\script.bat
 
-
 1. **Verificar status**
     ```bash
     kubectl get all
@@ -105,11 +104,21 @@ sequenceDiagram
     $.ajax({
     url: "http://192.168.56.101:32207", # URL gerada pelo Minikube
 
+1. **Caso seja necessário acessar o banco de dados**
+   ```bash
+   kubectl get pods
+
+   # Output semelhante ao abaixo será exibido
+   NAME                     READY   STATUS    RESTARTS   AGE
+   mysql-6fbbbd5b59-lscl6   1/1     Running   0          22h
+
+   kubectl exec --tty --stdin <nome do pod mysql - ex: mysql-6fbbbd5b59-lscl6> -- /bin/bash
+
 ## 📌 Observações
 Scripts .bat estão disponíveis para facilitar o deploy e a remoção dos recursos.
 Ajuste as configurações de acordo com seu ambiente (nome do namespace, imagens Docker, etc.).
 
-O Persistent Volume está configurado para utilizar o Minikube, através do diretório:
+O Persistent Volume está configurado para utilizar o padrão do Minikube, através do diretório:
 ```bash
     # configuração contiga em pv.yml
     hostPath:
